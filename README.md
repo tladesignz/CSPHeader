@@ -1,6 +1,5 @@
 # CSPHeader
 
-[![CI Status](https://img.shields.io/travis/Benjamin Erhart/CSPHeader.svg?style=flat)](https://travis-ci.org/Benjamin Erhart/CSPHeader)
 [![Version](https://img.shields.io/cocoapods/v/CSPHeader.svg?style=flat)](https://cocoapods.org/pods/CSPHeader)
 [![License](https://img.shields.io/cocoapods/l/CSPHeader.svg?style=flat)](https://cocoapods.org/pods/CSPHeader)
 [![Platform](https://img.shields.io/cocoapods/p/CSPHeader.svg?style=flat)](https://cocoapods.org/pods/CSPHeader)
@@ -8,6 +7,9 @@
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
+
+There's nothing to see there, the Example app just serves as a host for the unit tests in `Tests.swift`,
+so just execute these.
 
 ## Requirements
 
