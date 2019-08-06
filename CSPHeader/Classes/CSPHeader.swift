@@ -32,12 +32,12 @@ public class CSPHeader: NSObject {
     */
     private var directives = [Directive]()
 
-
+    @objc(initWithToken:)
     public init(token: String) {
         let directiveTokens = token.split(separator: ";")
 
         for token in directiveTokens {
-            if let directive = Directive.parse(token: String(token)) {
+            if let directive = Directive.parse(String(token)) {
                 if !directives.contains(directive) {
                     directives.append(directive)
                 }
@@ -49,6 +49,7 @@ public class CSPHeader: NSObject {
         self.init(directives: directives)
     }
 
+    @objc(initWithDirectives:)
     public init(directives: [Directive]) {
         for directive in directives {
             if !self.directives.contains(directive) {
@@ -60,10 +61,12 @@ public class CSPHeader: NSObject {
 
     // MARK: NSObject
 
+    @objc
     public override var hash: Int {
         return directives.hashValue
     }
 
+    @objc
     public override func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? CSPHeader else {
             return false
@@ -72,6 +75,7 @@ public class CSPHeader: NSObject {
         return String(describing: self) == String(describing: rhs)
     }
 
+    @objc
     public override var description: String {
         return directives.map { String(describing: $0) }.joined(separator: "; ")
     }
@@ -90,6 +94,7 @@ public class CSPHeader: NSObject {
      - returns: self for fluency.
     */
     @discardableResult
+    @objc(prependDirective:)
     public func prepend(_ directive: Directive) -> CSPHeader {
         let original = directives.first { $0 == directive }
 
@@ -111,6 +116,7 @@ public class CSPHeader: NSObject {
      - returns: self for fluency.
      */
     @discardableResult
+    @objc(prependDirectives:)
     public func prepend(_ directives: [Directive]) -> CSPHeader {
         for directive in directives {
             prepend(directive)
@@ -127,6 +133,7 @@ public class CSPHeader: NSObject {
      - returns: self for fluency.
     */
     @discardableResult
+    @objc(addOrReplaceDirective:)
     public func addOrReplace(_ directive: Directive) -> CSPHeader {
         let idx = directives.firstIndex(of: directive)
 
@@ -152,7 +159,8 @@ public class CSPHeader: NSObject {
      - returns: self for fluency.
      */
     @discardableResult
-    public func addOrReplace(_ directives: [Directive]) -> CSPHeader {
+    @objc(addOrReplaceDirectives:)
+    public func addOrReplace(directives: [Directive]) -> CSPHeader {
         for directive in directives {
             addOrReplace(directive)
         }
@@ -186,6 +194,7 @@ public class CSPHeader: NSObject {
      - returns: self for fluency.
     */
     @discardableResult
+    @objc
     public func allowInjectedScript(nonce: String? = nil) -> CSPHeader {
         if let scriptDirective = directives.first(where: { $0 is ScriptDirective }) {
             inject(scriptDirective, nonce)
@@ -223,6 +232,7 @@ public class CSPHeader: NSObject {
      - returns: self for fluency.
      */
     @discardableResult
+    @objc
     public func allowInjectedStyle(nonce: String? = nil) -> CSPHeader {
         if let styleDirective = directives.first(where: { $0 is StyleDirective }) {
             inject(styleDirective, nonce)

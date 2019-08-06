@@ -17,6 +17,7 @@
 		76B1369AC6D7383347831CF9 /* Pods_CSPHeader_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68460C8255167C7CAB6BFD0 /* Pods_CSPHeader_Tests.framework */; };
 		A0608E1D22F893E800616A41 /* .travis.yml in Resources */ = {isa = PBXBuildFile; fileRef = A0608E1B22F893E800616A41 /* .travis.yml */; };
 		A0608E1E22F893E800616A41 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A0608E1C22F893E800616A41 /* .gitignore */; };
+		A09CCF3B22F9CB5C00AFB8C0 /* ObjcTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A09CCF3A22F9CB5C00AFB8C0 /* ObjcTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		8586D3D13941845A4F6CF40C /* Pods_CSPHeader_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CSPHeader_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0608E1B22F893E800616A41 /* .travis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .travis.yml; path = ../.travis.yml; sourceTree = "<group>"; };
 		A0608E1C22F893E800616A41 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = .gitignore; path = ../.gitignore; sourceTree = "<group>"; };
+		A09CCF3922F9CB5B00AFB8C0 /* CSPHeader_Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CSPHeader_Tests-Bridging-Header.h"; sourceTree = "<group>"; };
+		A09CCF3A22F9CB5C00AFB8C0 /* ObjcTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcTest.m; sourceTree = "<group>"; };
 		A68460C8255167C7CAB6BFD0 /* Pods_CSPHeader_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CSPHeader_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7C71387896AC0421B801E79 /* Pods-CSPHeader_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CSPHeader_Tests.debug.xcconfig"; path = "Target Support Files/Pods-CSPHeader_Tests/Pods-CSPHeader_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		D156DF60B4566FD661B7EAAC /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -121,6 +124,8 @@
 			children = (
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				A09CCF3A22F9CB5C00AFB8C0 /* ObjcTest.m */,
+				A09CCF3922F9CB5B00AFB8C0 /* CSPHeader_Tests-Bridging-Header.h */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
+				A09CCF3B22F9CB5C00AFB8C0 /* ObjcTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +553,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A7C71387896AC0421B801E79 /* Pods-CSPHeader_Tests.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -559,6 +566,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/CSPHeader_Tests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CSPHeader_Example.app/CSPHeader_Example";
 			};
@@ -568,6 +577,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C4D5685402C901677FB4D0A /* Pods-CSPHeader_Tests.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -576,6 +586,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/CSPHeader_Tests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CSPHeader_Example.app/CSPHeader_Example";
 			};

@@ -10,59 +10,148 @@ import UIKit
 @objc
 public class Source: NSObject {
 
-    public enum Value: String {
-        case none = "'none'"
-        case `self` = "'self'"
-        case unsafeInline = "'unsafe-inline'"
-        case unsafeEval = "'unsafe-eval'"
+    @objc
+    public enum Value: Int, RawRepresentable {
+        case none
+        case `self`
+        case unsafeInline
+        case unsafeEval
 
-        case allHosts = "*"
+        case allHosts
 
         /**
          Only in sandbox directive.
         */
-        case allowForms = "allow-forms"
+        case allowForms
 
         /**
          Only in sandbox directive.
          */
-        case allowPointerLock = "allow-pointer-lock"
+        case allowPointerLock
 
         /**
          Only in sandbox directive.
          */
-        case allowPopups = "allow-popups"
+        case allowPopups
 
         /**
          Only in sandbox directive.
          */
-        case allowSameOrigin = "allow-same-origin"
+        case allowSameOrigin
 
         /**
          Only in sandbox directive.
          */
-        case allowScripts = "allow-scripts"
+        case allowScripts
 
         /**
          Only in sandbox directive.
          */
-        case allowTopNavigation = "allow-top-navigation"
+        case allowTopNavigation
+
+        public typealias RawValue = String
+
+        public var rawValue: String {
+            switch self {
+            case .none:
+                return "'none'"
+            case .self:
+                return "'self'"
+            case .unsafeInline:
+                return "'unsafe-inline'"
+            case .unsafeEval:
+                return "'unsafe-eval'"
+            case .allHosts:
+                return "*"
+            case .allowForms:
+                return "allow-forms"
+            case .allowPointerLock:
+                return "allow-pointer-lock"
+            case .allowPopups:
+                return "allow-popups"
+            case .allowSameOrigin:
+                return "allow-same-origin"
+            case .allowScripts:
+                return "allow-scripts"
+            case .allowTopNavigation:
+                return "allow-top-navigation"
+            }
+        }
+
+        public init?(rawValue: String) {
+            switch rawValue {
+            case "'none'":
+                self = .none
+            case "'self'":
+                self = .`self`
+            case "'unsafe-inline'":
+                self = .unsafeInline
+            case "'unsafe-eval'":
+                self = .unsafeEval
+            case "*":
+                self = .allHosts
+            case "allow-forms":
+                self = .allowForms
+            case "allow-pointer-lock":
+                self = .allowPointerLock
+            case "allow-popups":
+                self = .allowPopups
+            case "allow-same-origin":
+                self = .allowSameOrigin
+            case "allow-scripts":
+                self = .allowScripts
+            case "allow-top-navigation":
+                self = .allowTopNavigation
+            default:
+                return nil
+            }
+        }
     }
 
-    public enum HashAlgo: String, CaseIterable {
-        case sha256 = "sha256"
-        case sha384 = "sha384"
-        case sha512 = "sha512"
+    @objc
+    public enum HashAlgo: Int, RawRepresentable, CaseIterable {
+
+        case sha256
+        case sha384
+        case sha512
+
+        public typealias RawValue = String
+
+        public var rawValue: String {
+            switch self {
+                case .sha256:
+                    return "sha256"
+                case .sha384:
+                    return "sha384"
+                case .sha512:
+                    return "sha512"
+            }
+        }
+
+        public init?(rawValue: String) {
+            switch rawValue {
+            case "sha256":
+                self = .sha256
+            case "sha384":
+                self = .sha384
+            case "sha512":
+                self = .sha512
+            default:
+                return nil
+            }
+        }
     }
 
     
     private let value: String
 
 
+    @objc(initWithString:)
     public init(_ value: String) {
         self.value = value
     }
 
+    @objc(initWithValue:)
     public init(_ value: Value) {
         self.value = value.rawValue
     }
@@ -70,10 +159,12 @@ public class Source: NSObject {
 
     // MARK: NSObject
 
+    @objc
     public override var hash: Int {
         return value.hashValue
     }
 
+    @objc
     public override func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? Source else {
             return false
@@ -82,11 +173,13 @@ public class Source: NSObject {
         return value == rhs.value
     }
 
+    @objc
     public override var description: String {
         return value
     }
 }
 
+@objcMembers
 public class NoneSource: Source {
 
     public init() {
@@ -94,6 +187,7 @@ public class NoneSource: Source {
     }
 }
 
+@objcMembers
 public class SelfSource: Source {
 
     public init() {
@@ -101,6 +195,7 @@ public class SelfSource: Source {
     }
 }
 
+@objcMembers
 public class UnsafeInlineSource: Source {
 
     public init() {
@@ -108,6 +203,7 @@ public class UnsafeInlineSource: Source {
     }
 }
 
+@objcMembers
 public class UnsafeEvalSource: Source {
 
     public init() {
@@ -115,6 +211,7 @@ public class UnsafeEvalSource: Source {
     }
 }
 
+@objcMembers
 public class SchemeSource: Source {
 
     public init(scheme: String) {
@@ -126,6 +223,7 @@ public class SchemeSource: Source {
     }
 }
 
+@objcMembers
 public class HostSource: Source {
 
     public init(url: URL) {
@@ -133,6 +231,7 @@ public class HostSource: Source {
     }
 }
 
+@objcMembers
 public class NonceSource: Source {
 
     private static let regEx = try? NSRegularExpression(pattern: "^'?nonce-(.*?)'?$", options: .caseInsensitive)
@@ -212,8 +311,10 @@ public class NonceSource: Source {
     }
 }
 
+@objcMembers
 public class HashSource: Source {
 
+    @objc(initWithHashAlgo:andHash:)
     public init(algo: HashAlgo, hash: String) {
         super.init("'\(algo.rawValue)-\(hash)'")
     }
@@ -229,6 +330,7 @@ public class HashSource: Source {
     }
 }
 
+@objcMembers
 public class AllowFormsSource: Source {
 
     public init() {
@@ -236,6 +338,7 @@ public class AllowFormsSource: Source {
     }
 }
 
+@objcMembers
 public class AllowPointerLockSource: Source {
 
     public init() {
@@ -243,6 +346,7 @@ public class AllowPointerLockSource: Source {
     }
 }
 
+@objcMembers
 public class AllowPopups: Source {
 
     public init() {
@@ -250,6 +354,7 @@ public class AllowPopups: Source {
     }
 }
 
+@objcMembers
 public class AllowSameOrigin: Source {
 
     public init() {
@@ -257,12 +362,15 @@ public class AllowSameOrigin: Source {
     }
 }
 
+@objcMembers
 public class AllowScripts: Source {
 
     public init() {
         super.init(.allowScripts)
     }
 }
+
+@objcMembers
 public class AllowTopNavigationSource: Source {
 
     public init() {

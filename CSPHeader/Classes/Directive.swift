@@ -10,31 +10,112 @@ import Foundation
 @objc
 public class Directive: NSObject {
 
-    public enum Name: String {
-        case baseUri = "base-uri"
-        case childSrc = "child-src"
-        case connectSrc = "connect-src"
-        case defaultSrc = "default-src"
-        case fontSrc = "font-src"
-        case formAction = "form-action"
-        case frameAncestors = "frame-ancestors"
-        case frameSrc = "frame-src"
-        case imgSrc = "img-src"
-        case mediaSrc = "media-src"
-        case objectSrc = "object-src"
-        case pluginTypes = "plugin-types"
-        case reportUri = "report-uri"
-        case sandbox = "sandbox"
-        case scriptSrc = "script-src"
-        case styleSrc = "style-src"
+    @objc
+    public enum Name: Int, RawRepresentable {
+        case baseUri
+        case childSrc
+        case connectSrc
+        case defaultSrc
+        case fontSrc
+        case formAction
+        case frameAncestors
+        case frameSrc
+        case imgSrc
+        case mediaSrc
+        case objectSrc
+        case pluginTypes
+        case reportUri
+        case sandbox
+        case scriptSrc
+        case styleSrc
+
+        public typealias RawValue = String
+
+        public var rawValue: String {
+            switch self {
+            case .baseUri:
+                return "base-uri"
+            case .childSrc:
+                return "child-src"
+            case .connectSrc:
+                return "connect-src"
+            case .defaultSrc:
+                return "default-src"
+            case .fontSrc:
+                return "font-src"
+            case .formAction:
+                return "form-action"
+            case .frameAncestors:
+                return "frame-ancestors"
+            case .frameSrc:
+                return "frame-src"
+            case .imgSrc:
+                return "img-src"
+            case .mediaSrc:
+                return "media-src"
+            case .objectSrc:
+                return "object-src"
+            case .pluginTypes:
+                return "plugin-types"
+            case .reportUri:
+                return "report-uri"
+            case .sandbox:
+                return "sandbox"
+            case .scriptSrc:
+                return "script-src"
+            case .styleSrc:
+                return "style-src"
+            }
+        }
+
+        public init?(rawValue: String) {
+            switch rawValue {
+            case "base-uri":
+                self = .baseUri
+            case "child-src":
+                self = .childSrc
+            case "connect-src":
+                self = .connectSrc
+            case "default-src":
+                self = .defaultSrc
+            case "font-src":
+                self = .fontSrc
+            case "form-action":
+                self = .formAction
+            case "frame-ancestors":
+                self = .frameAncestors
+            case "frame-src":
+                self = .frameSrc
+            case "img-src":
+                self = .imgSrc
+            case "media-src":
+                self = .mediaSrc
+            case "object-src":
+                self = .objectSrc
+            case "plugin-types":
+                self = .pluginTypes
+            case "report-uri":
+                self = .reportUri
+            case "sandbox":
+                self = .sandbox
+            case "script-src":
+                self = .scriptSrc
+            case "style-src":
+                self = .styleSrc
+            default:
+                return nil
+            }
+        }
     }
 
-
+    @objc
     public let name: String
 
+    @objc
     private(set) public var sources: [Source]
 
-    public class func parse(token: String) -> Directive? {
+    @objc
+    public class func parse(_ token: String) -> Directive? {
         let pieces = token.trimmingCharacters(in: .whitespacesAndNewlines)
             .split(separator: " ")
 
@@ -147,10 +228,12 @@ public class Directive: NSObject {
         self.init(name: name.rawValue, sources)
     }
 
+    @objc(initWithStringName:andSourceStrings:)
     public convenience init(name: String, _ sources: [String]) {
         self.init(name: name, sources.map { Source($0) })
     }
 
+    @objc(initWithName:andSourceStrings:)
     public convenience init(name: Name, _ sources: [String]) {
         self.init(name: name.rawValue, sources)
     }
@@ -163,11 +246,13 @@ public class Directive: NSObject {
         self.init(name: name, sources)
     }
 
+    @objc(initWithStringName:andSources:)
     public init(name: String, _ sources: [Source]) {
         self.name = name
         self.sources = sources
     }
 
+    @objc(initWithName:andSources:)
     public init(name: Name, _ sources: [Source]) {
         self.name = name.rawValue
         self.sources = sources
@@ -176,10 +261,12 @@ public class Directive: NSObject {
 
     // MARK: NSObject
 
+    @objc
     public override var hash: Int {
         return name.hashValue
     }
 
+    @objc
     public override func isEqual(_ object: Any?) -> Bool {
         guard let rhs = object as? Directive else {
             return false
@@ -188,6 +275,7 @@ public class Directive: NSObject {
         return name == rhs.name
     }
 
+    @objc
     public override var description: String {
         var token = [name]
 
@@ -205,7 +293,7 @@ public class Directive: NSObject {
         return token.joined(separator: " ")
     }
 
-    
+
     // MARK: Public Methods
 
     @discardableResult
@@ -214,6 +302,7 @@ public class Directive: NSObject {
     }
 
     @discardableResult
+    @objc
     public func append(_ sources: [Source]) -> Directive {
         self.sources.append(contentsOf: sources)
 
@@ -226,6 +315,7 @@ public class Directive: NSObject {
     }
 
     @discardableResult
+    @objc
     public func prepend(_ sources: [Source]) -> Directive {
         var newSources = [Source]()
         newSources.append(contentsOf: sources)
@@ -242,6 +332,7 @@ public class Directive: NSObject {
     }
 
     @discardableResult
+    @objc
     public func replace(_ sources: [Source]) -> Directive {
         self.sources = sources
 
@@ -249,41 +340,50 @@ public class Directive: NSObject {
     }
 
     @discardableResult
+    @objc
     public func removeAll() -> Directive {
         return replace([])
     }
 
+    @objc(containsSource:)
     public func contains(source: Source) -> Bool {
         return sources.contains(source)
     }
 
+    @objc(containsSourceValue:)
     public func contains(source: Source.Value) -> Bool {
         return contains(source: Source(source))
     }
 
+    @objc(containsSourceFromString:)
     public func contains(source: String) -> Bool {
         return contains(source: Source(source))
     }
 
+    @objc(filter:)
     public func filter(_ isIncluded: (Source) -> Bool) -> [Source] {
         return sources.filter(isIncluded)
     }
 
+    @objc(containsSourceOfType:)
     public func contains(a sourceType: Source.Type) -> Bool {
         return !(filter { type(of: $0) == sourceType }.isEmpty)
     }
 
+    @objc
     public var isEmpty: Bool {
         return sources.isEmpty
     }
 }
 
+@objc
 public class BaseUriDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -300,17 +400,20 @@ public class BaseUriDirective: Directive {
         self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .baseUri, sources)
     }
 }
 
+@objc
 public class ChildDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -327,17 +430,20 @@ public class ChildDirective: Directive {
         self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .childSrc, sources)
     }
 }
 
+@objc
 public class ConnectDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -354,17 +460,20 @@ public class ConnectDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .connectSrc, sources)
     }
 }
 
+@objc
 public class DefaultDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -381,17 +490,20 @@ public class DefaultDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .defaultSrc, sources)
     }
 }
 
+@objc
 public class FontDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -408,17 +520,20 @@ public class FontDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .fontSrc, sources)
     }
 }
 
+@objc
 public class FormActionDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -435,17 +550,20 @@ public class FormActionDirective: Directive {
         self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .formAction, sources)
     }
 }
 
+@objc
 public class FrameAncestorsDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -462,18 +580,21 @@ public class FrameAncestorsDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .frameAncestors, sources)
     }
 }
 
 @available(*, deprecated, message: "The frame-src directive is deprecated. Authors who wish to govern nested browsing contexts SHOULD use the child-src directive instead.")
+@objc
 public class FrameDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -490,17 +611,20 @@ public class FrameDirective: Directive {
         self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .frameSrc, sources)
     }
 }
 
+@objc
 public class ImgDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -517,17 +641,20 @@ public class ImgDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .imgSrc, sources)
     }
 }
 
+@objc
 public class MediaDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -544,17 +671,20 @@ public class MediaDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .mediaSrc, sources)
     }
 }
 
+@objc
 public class ObjectDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -571,17 +701,20 @@ public class ObjectDirective: Directive {
         self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .objectSrc, sources)
     }
 }
 
+@objc
 public class PluginTypesDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -598,17 +731,20 @@ public class PluginTypesDirective: Directive {
         self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .pluginTypes, sources)
     }
 }
 
+@objc
 public class ReportUriDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -625,17 +761,20 @@ public class ReportUriDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .reportUri, sources)
     }
 }
 
+@objc
 public class SandboxDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -652,17 +791,20 @@ public class SandboxDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .sandbox, sources)
     }
 }
 
+@objc
 public class ScriptDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -679,17 +821,20 @@ public class ScriptDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .scriptSrc, sources)
     }
 }
 
+@objc
 public class StyleDirective: Directive {
 
     public convenience init(_ sources: String...) {
         self.init(sources)
     }
 
+    @objc(initWithSourceStrings:)
     public convenience init(_ sources: [String]) {
         self.init(sources.map { Source($0) })
     }
@@ -706,6 +851,7 @@ public class StyleDirective: Directive {
     self.init(sources)
     }
 
+    @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .styleSrc, sources)
     }
