@@ -72,13 +72,13 @@ public class Directive: Hashable, CustomStringConvertible {
                     sources.append(AllowTopNavigationSource())
                 }
             }
-            else if source.range(of: "^'nonce-", options: .regularExpression) != nil {
+            else if NonceSource.containsNonce(token: source) {
                 sources.append(NonceSource(nonce: source))
             }
-            else if source.range(of: "^'sha", options: .regularExpression) != nil {
+            else if HashSource.containsHash(token: source) {
                 sources.append(HashSource(rawValue: source))
             }
-            else if source.range(of: "^\\w+:$", options: .regularExpression) != nil {
+            else if SchemeSource.containsScheme(token: source) {
                 sources.append(SchemeSource(scheme: source))
             }
             else if let url = URL(string: source) {

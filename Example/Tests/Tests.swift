@@ -46,6 +46,37 @@ class CSPHeaderSpec: QuickSpec {
             it("is parsed correctly") {
                 expect(header2).to(equal(header1))
             }
+
+            it("creates nonces correctly") {
+                let nonce = NonceSource.generateNonce()
+
+                expect(nonce).toNot(beNil())
+
+                print("[\(String(describing: type(of: self)))] nonce=\(nonce!)")
+
+                let source1 = NonceSource(nonce: nonce!)
+                expect(String(describing: source1)).to(equal("'nonce-\(nonce!)'"))
+
+                let source2 = NonceSource(nonce: "nonce-\(nonce!)")
+                expect(String(describing: source2)).to(equal("'nonce-\(nonce!)'"))
+
+                let source3 = NonceSource(nonce: "'NonCe-\(nonce!)'")
+                expect(String(describing: source3)).to(equal("'nonce-\(nonce!)'"))
+
+                let source4 = NonceSource(nonce: "NONC-\(nonce!)'")
+                expect(String(describing: source4)).to(equal("'nonce-NONC-\(nonce!)''"))
+            }
+
+            it("detects nonces correctly") {
+                expect(NonceSource.extractNonce(token: "'nonce-foobar'")).to(equal("foobar"))
+                expect(NonceSource.containsNonce(token: "'nonce-foobar'")).to(beTrue())
+                expect(NonceSource.containsNonce(token: "NoNcE-foobar'")).to(beTrue())
+                expect(NonceSource.containsNonce(token: "'nonce-'")).to(beFalse())
+                expect(NonceSource.containsNonce(token: "'foobar:'")).to(beFalse())
+                expect(NonceSource.containsNonce(token: "'nonce:'")).to(beFalse())
+                expect(NonceSource.containsNonce(token: "'http://www.example.com/'")).to(beFalse())
+                expect(NonceSource.containsNonce(token: "'unsafe-eval'")).to(beFalse())
+            }
         }
 
         describe("a header with a hash") {
@@ -59,6 +90,14 @@ class CSPHeaderSpec: QuickSpec {
 
             it("is parsed correctly") {
                 expect(header2).to(equal(header1))
+            }
+
+            it("is detected correctly") {
+                expect(HashSource.containsHash(token: "'sha256-ksadfhjkasdfhsdkaf'")).to(beTrue())
+                expect(HashSource.containsHash(token: "sha256-ksadfhjkasdfhsdkaf")).to(beTrue())
+                expect(HashSource.containsHash(token: "sha384-ksadfhjkasdfhsdkaf")).to(beTrue())
+                expect(HashSource.containsHash(token: "sha512-ksadfhjkasdfhsdkaf")).to(beTrue())
+                expect(HashSource.containsHash(token: "sha1235-ksadfhjkasdfhsdkaf")).to(beFalse())
             }
         }
 

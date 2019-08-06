@@ -48,7 +48,7 @@ public class Source: Hashable, CustomStringConvertible {
         case allowTopNavigation = "allow-top-navigation"
     }
 
-    public enum HashAlgo: String {
+    public enum HashAlgo: String, CaseIterable {
         case sha256 = "sha256"
         case sha384 = "sha384"
         case sha512 = "sha512"
@@ -121,6 +121,10 @@ public class SchemeSource: Source {
     public init(scheme: String) {
         super.init(scheme.contains(":") ? scheme : "\(scheme):")
     }
+
+    public class func containsScheme(token: String) -> Bool {
+        return token.range(of: "^\\w+:$", options: [.regularExpression, .caseInsensitive]) != nil
+    }
 }
 
 public class HostSource: Source {
@@ -132,8 +136,80 @@ public class HostSource: Source {
 
 public class NonceSource: Source {
 
+    private static let regEx = try? NSRegularExpression(pattern: "^'?nonce-(.*?)'?$", options: .caseInsensitive)
+
+    private static let length = 128 /* Bit */ / 8
+
+    public let nonce: String
+
+    /**
+     Instantiate a `NonceSource` from the given nonce string.
+
+     The nonce string can contain the complete token, in which case the actual
+      nonce is extracted and the token is created fresh from that.
+    */
     public init(nonce: String) {
-        super.init(nonce.contains("'nonce-") ? nonce : "'nonce-\(nonce)'")
+        self.nonce = NonceSource.extractNonce(token: nonce) ?? nonce
+
+        super.init("'nonce-\(self.nonce)'")
+    }
+
+    /**
+     Create a nonce and init `NonceSource` with that.
+
+     `#generateNonce` can fail therefore this is optional.
+
+     You can get the generated nonce without the decoration on `#nonce`.
+    */
+    public convenience init?() {
+        if let nonce = NonceSource.generateNonce() {
+            self.init(nonce: nonce)
+        }
+        else {
+            return nil
+        }
+    }
+
+    /**
+     Tries to extract the nonce from a nonce source token.
+
+     - parameter token: The nonce source token.
+     - returns: The extracted nonce or nil, if the token isn't a valid nonce token.
+    */
+    public class func extractNonce(token: String) -> String? {
+        let matches = regEx?.matches(in: token, options: [], range: NSRange(token.startIndex..., in: token))
+
+        if let nsRange = matches?.first?.range(at: 1),
+            nsRange.location != NSNotFound,
+            let range = Range(nsRange, in: token),
+            !range.isEmpty {
+
+            return String(token[range])
+        }
+
+        return nil
+    }
+
+    public class func containsNonce(token: String) -> Bool {
+        return extractNonce(token: token) != nil
+    }
+
+    /**
+     Generate a cryptographically secure nonce which complies with requirements.
+
+     https://www.w3.org/TR/CSP2/#source-list-syntax
+
+     > The generated value SHOULD be at least 128 bits long (before encoding),
+     > and generated via a cryptographically secure random number generator.
+    */
+    public class func generateNonce() -> String? {
+        if let data = NSMutableData(length: length),
+            SecRandomCopyBytes(kSecRandomDefault, data.count, data.mutableBytes) == errSecSuccess {
+
+            return data.base64EncodedString(options: [])
+        }
+
+        return nil
     }
 }
 
@@ -145,6 +221,12 @@ public class HashSource: Source {
 
     init(rawValue: String) {
         super.init(rawValue)
+    }
+
+    public class func containsHash(token: String) -> Bool {
+        let algos = HashAlgo.allCases.map { $0.rawValue }.joined(separator: "|")
+
+        return token.range(of: "^'?(\(algos))", options: [.regularExpression, .caseInsensitive]) != nil
     }
 }
 
