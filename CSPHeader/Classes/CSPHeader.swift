@@ -177,13 +177,11 @@ public class CSPHeader: Equatable, CustomStringConvertible {
     */
     @discardableResult
     public func allowInjectedScript(nonce: String? = nil) -> CSPHeader {
-        let source = nonce != nil ? NonceSource(nonce: nonce!) : UnsafeInlineSource()
-
         if let scriptDirective = directives.first(where: { $0 is ScriptDirective }) {
-            inject(scriptDirective, source)
+            inject(scriptDirective, nonce)
         }
         else if let defaultDirective = directives.first(where: { $0 is DefaultDirective }) {
-            inject(defaultDirective, source)
+            inject(defaultDirective, nonce)
         }
 
         return self
@@ -216,13 +214,11 @@ public class CSPHeader: Equatable, CustomStringConvertible {
      */
     @discardableResult
     public func allowInjectedStyle(nonce: String? = nil) -> CSPHeader {
-        let source = nonce != nil ? NonceSource(nonce: nonce!) : UnsafeInlineSource()
-
         if let styleDirective = directives.first(where: { $0 is StyleDirective }) {
-            inject(styleDirective, source)
+            inject(styleDirective, nonce)
         }
         else if let defaultDirective = directives.first(where: { $0 is DefaultDirective }) {
-            inject(defaultDirective, source)
+            inject(defaultDirective, nonce)
         }
 
         return self
@@ -234,11 +230,13 @@ public class CSPHeader: Equatable, CustomStringConvertible {
      - parameter directive: The directive to work on.
      - parameter source: The source to prepend/overwrite with.
     */
-    private func inject(_ directive: Directive, _ source: Source) {
+    private func inject(_ directive: Directive, _ nonce: String?) {
         if directive.contains(source: .unsafeInline) {
             // Can be safely injected anyway, we're done, no problem.
             return
         }
+
+        let source = nonce != nil ? NonceSource(nonce: nonce!) : UnsafeInlineSource()
 
         if directive.contains(source: .none) || directive.isEmpty {
             // Nothing allowed at all. Allow ours specifically, if we have a nonce
