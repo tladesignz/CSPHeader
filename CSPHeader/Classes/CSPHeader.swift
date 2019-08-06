@@ -17,7 +17,8 @@ import Foundation
  as the spec implicitely requires but relies on string splitting, so there
  might be some exotic edge cases, where it fails on a valid CSP header.
  */
-public class CSPHeader: Equatable, CustomStringConvertible {
+@objc
+public class CSPHeader: NSObject {
 
     /**
      The NSMutableOrderedSet provides exactly the required behaviour as per spec.
@@ -57,17 +58,26 @@ public class CSPHeader: Equatable, CustomStringConvertible {
     }
 
 
-    // Equatable
-    public static func == (lhs: CSPHeader, rhs: CSPHeader) -> Bool {
-        return String(describing: lhs) == String(describing: rhs)
+    // MARK: NSObject
+
+    public override var hash: Int {
+        return directives.hashValue
     }
 
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let rhs = object as? CSPHeader else {
+            return false
+        }
 
-    // MARK: CustomStringConvertible
+        return String(describing: self) == String(describing: rhs)
+    }
 
-    public var description: String {
+    public override var description: String {
         return directives.map { String(describing: $0) }.joined(separator: "; ")
     }
+
+
+    // MARK: Public methods
 
     /**
      Prepend the sources of a given directive to the directive with the same name,
@@ -223,6 +233,9 @@ public class CSPHeader: Equatable, CustomStringConvertible {
 
         return self
     }
+
+
+    // MARK: Private Methods
 
     /**
      Helper method to be used in `allowInjectedScript` and `allowInjectedStyle`.

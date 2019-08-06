@@ -7,7 +7,8 @@
 
 import UIKit
 
-public class Source: Hashable, CustomStringConvertible {
+@objc
+public class Source: NSObject {
 
     public enum Value: String {
         case none = "'none'"
@@ -67,23 +68,21 @@ public class Source: Hashable, CustomStringConvertible {
     }
 
 
-    // MARK: Hashable
+    // MARK: NSObject
 
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(value)
+    public override var hash: Int {
+        return value.hashValue
     }
 
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let rhs = object as? Source else {
+            return false
+        }
 
-    // MARK: Equatable
-
-    public static func == (lhs: Source, rhs: Source) -> Bool {
-        return lhs.value == rhs.value
+        return value == rhs.value
     }
 
-
-    // MARK: CustomStringConvertible
-
-    public var description: String {
+    public override var description: String {
         return value
     }
 }

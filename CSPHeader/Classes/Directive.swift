@@ -7,7 +7,8 @@
 
 import Foundation
 
-public class Directive: Hashable, CustomStringConvertible {
+@objc
+public class Directive: NSObject {
 
     public enum Name: String {
         case baseUri = "base-uri"
@@ -173,23 +174,21 @@ public class Directive: Hashable, CustomStringConvertible {
     }
 
 
-    // MARK: Hashable
+    // MARK: NSObject
 
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
+    public override var hash: Int {
+        return name.hashValue
     }
 
+    public override func isEqual(_ object: Any?) -> Bool {
+        guard let rhs = object as? Directive else {
+            return false
+        }
 
-    // MARK: Equatable
-
-    public static func == (lhs: Directive, rhs: Directive) -> Bool {
-        return lhs.name == rhs.name
+        return name == rhs.name
     }
 
-
-    // MARK: CustomStringConvertible
-
-    public var description: String {
+    public override var description: String {
         var token = [name]
 
         if sources.count > 0 {
@@ -206,6 +205,8 @@ public class Directive: Hashable, CustomStringConvertible {
         return token.joined(separator: " ")
     }
 
+    
+    // MARK: Public Methods
 
     @discardableResult
     public func append(_ sources: Source...) -> Directive {
