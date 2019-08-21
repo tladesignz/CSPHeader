@@ -268,5 +268,41 @@ class CSPHeaderSpec: QuickSpec {
                 expect(String(describing: header)).to(equal(token))
             }
         }
+
+        describe("headers dictionary support") {
+            let token = "default-src 'self'"
+
+            it("inits from a crazy-cased x-webkit-csp header") {
+                let header = CSPHeader(headers: ["X-WEBkit-csp": token])
+
+                expect(String(describing: header)).to(equal(token))
+            }
+
+            it("standard header wins over webkit header") {
+                let header = CSPHeader(headers: ["content-security-policy": token, "X-WebKit-CSP": "foo bar"])
+
+                expect(String(describing: header)).to(equal(token))
+            }
+
+            it("replaces headers correctly") {
+                let addition = "; script-src 'none'"
+
+                var headers = ["Foo": "bar",
+                               "CONTENT-Security-Policy": token,
+                               "x-webkit-csp": token,]
+
+                let expected = ["Foo": "bar",
+                                "Content-Security-Policy": token + addition,
+                                "X-WebKit-CSP": token + addition,]
+
+                let header = CSPHeader(headers: headers)
+
+                header.addOrReplace(ScriptDirective(NoneSource()))
+
+                header.applyTo(headers: &headers)
+
+                expect(headers).to(equal(expected))
+            }
+        }
     }
 }

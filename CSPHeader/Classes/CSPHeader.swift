@@ -20,6 +20,8 @@ import Foundation
 @objc
 public class CSPHeader: NSObject {
 
+    private static let headerNames = ["Content-Security-Policy", "X-WebKit-CSP"]
+
     /**
      The NSMutableOrderedSet provides exactly the required behaviour as per spec.
 
@@ -43,6 +45,32 @@ public class CSPHeader: NSObject {
                 }
             }
         }
+    }
+
+    /**
+     Init from a dictionary of HTTP headers which might contain a CSP header.
+
+     "Content-Security-Policy" and "X-WebKit-CSP" headers are respected (in that
+     order), the match is case-insensitive.
+    */
+    @objc(initFromHeaders:)
+    public convenience init(headers: [String: String]) {
+        var token = ""
+
+        for name in CSPHeader.headerNames {
+            for key in headers.keys {
+                if key.caseInsensitiveCompare(name) == .orderedSame {
+                    token = headers[key]!
+                    break
+                }
+            }
+
+            if !token.isEmpty {
+                break
+            }
+        }
+
+        self.init(token: token)
     }
 
     public convenience init(_ directives: Directive...) {
@@ -242,6 +270,29 @@ public class CSPHeader: NSObject {
         }
 
         return self
+    }
+
+    /**
+     Applies this CSP header to a dictionary of HTTP headers.
+
+     All existing versions of "Content-Security-Policy" and "X-WebKit-CSP"
+     (regardless of casing) will be removed and 2 new headers with the respective
+     names will be added.
+
+     - parameter headers: A dictionary of HTTP headers.
+    */
+    public func applyTo(headers: inout [String: String]) {
+        let csp = String(describing: self)
+
+        for name in CSPHeader.headerNames {
+            for key in headers.keys {
+                if key.caseInsensitiveCompare(name) == .orderedSame {
+                    headers[key] = nil
+                }
+            }
+
+            headers[name] = csp
+        }
     }
 
 

@@ -35,6 +35,9 @@
 
     HashSource *hash = [[HashSource alloc] initWithHashAlgo: HashAlgoSha256 andHash: @"foo"];
     XCTAssertEqualObjects(hash.description, @"'sha256-foo'");
+
+    CSPHeader *header2 = [[CSPHeader alloc] initFromHeaders:@{@"Content-Security-Policy": @"default-src 'self'"}];
+    XCTAssertEqualObjects(header2.description, @"default-src 'self'");
 }
 
 @end
