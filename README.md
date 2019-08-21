@@ -24,7 +24,8 @@ pod 'CSPHeader'
 
 ## Author
 
-Benjamin Erhart, berhart@netzarchitekten.com
+Benjamin Erhart, Die Netzarchitekten e.U.
+https://die.netzarchitekten.com/
 
 ## License
 

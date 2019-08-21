@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CSPHeader'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'CSPHeader parses, manipulates and generates Content-Security-Policy headers.'
 
 # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ in your app and which needs some JavaScript injected.
 
 You could also build a CSP analyzer or generator app with it.
 
-This is the first release and probably contains some rough edges.
+This is the first release and may contain some rough edges.
 
 Pull requests wellcome!
                        DESC
