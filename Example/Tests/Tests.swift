@@ -304,5 +304,13 @@ class CSPHeaderSpec: QuickSpec {
                 expect(headers).to(equal(expected))
             }
         }
+
+        describe("special all-hosts source") {
+            it("is created correctly") {
+                let header = CSPHeader(DefaultDirective(HostSource.all()))
+
+                expect(String(describing: header)).to(equal("default-src *"))
+            }
+        }
     }
 }

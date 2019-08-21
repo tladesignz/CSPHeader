@@ -226,6 +226,10 @@ public class SchemeSource: Source {
 @objcMembers
 public class HostSource: Source {
 
+    public class func all() -> HostSource {
+        return HostSource(url: URL(string: Value.allHosts.rawValue)!)
+    }
+
     public init(url: URL) {
         super.init(url.absoluteString)
     }
