@@ -7,6 +7,9 @@
 
 import UIKit
 
+/**
+ [Spec](https://www.w3.org/TR/CSP2/#source-list-syntax)
+ */
 @objc
 public class Source: NSObject {
 

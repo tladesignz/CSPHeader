@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ [Spec](https://www.w3.org/TR/CSP2/#policy-syntax)
+ */
 @objc
 public class Directive: NSObject {
 
@@ -376,6 +379,13 @@ public class Directive: NSObject {
     }
 }
 
+/**
+ The base-uri directive restricts the URLs that can be used to specify the document base URL.
+
+ Note: base-uri does not fall back to the default sources.
+
+ https://www.w3.org/TR/CSP2/#directive-base-uri
+ */
 @objc
 public class BaseUriDirective: Directive {
 
@@ -406,6 +416,12 @@ public class BaseUriDirective: Directive {
     }
 }
 
+/**
+ The child-src directive governs the creation of nested browsing contexts as well
+ as Worker execution contexts.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-child-src)
+ */
 @objc
 public class ChildDirective: Directive {
 
@@ -436,6 +452,12 @@ public class ChildDirective: Directive {
     }
 }
 
+/**
+ The connect-src directive restricts which URLs the protected resource can load
+ using script interfaces.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-connect-src)
+ */
 @objc
 public class ConnectDirective: Directive {
 
@@ -466,6 +488,11 @@ public class ConnectDirective: Directive {
     }
 }
 
+/**
+ The default-src directive sets a default source list for a number of directives.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-default-src")
+ */
 @objc
 public class DefaultDirective: Directive {
 
@@ -496,6 +523,11 @@ public class DefaultDirective: Directive {
     }
 }
 
+/**
+ The font-src directive restricts from where the protected resource can load fonts.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-font-src)
+ */
 @objc
 public class FontDirective: Directive {
 
@@ -526,6 +558,15 @@ public class FontDirective: Directive {
     }
 }
 
+/**
+ The form-action restricts which URLs can be used as the action of HTML form elements.
+
+ Note: form-action does not fall back to the default sources when the directive is not defined.
+ That is, a policy that defines default-src 'none' but not form-action will still
+ allow form submissions to any target.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-form-action)
+ */
 @objc
 public class FormActionDirective: Directive {
 
@@ -556,6 +597,20 @@ public class FormActionDirective: Directive {
     }
 }
 
+/**
+ The frame-ancestors directive indicates whether the user agent should allow
+ embedding the resource using a frame, iframe, object, embed or applet element,
+ or equivalent functionality in non-HTML resources.
+
+ Resources can use this directive to avoid many UI Redressing attacks by avoiding
+ being embedded into potentially hostile contexts.
+
+ Note: frame-ancestors does not fall back to the default sources when the
+ directive is not defined. That is, a policy that defines default-src 'none' but
+ not frame-ancestors will still allow the resource to be framed from anywhere.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-frame-ancestors)
+ */
 @objc
 public class FrameAncestorsDirective: Directive {
 
@@ -586,7 +641,14 @@ public class FrameAncestorsDirective: Directive {
     }
 }
 
-@available(*, deprecated, message: "The frame-src directive is deprecated. Authors who wish to govern nested browsing contexts SHOULD use the child-src directive instead.")
+/**
+ The frame-src directive is deprecated. Authors who wish to govern nested browsing
+ contexts SHOULD use the child-src directive instead.
+
+ The frame-src directive restricts from where the protected resource can embed frames.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-frame-src)
+ */
 @objc
 public class FrameDirective: Directive {
 
@@ -617,6 +679,11 @@ public class FrameDirective: Directive {
     }
 }
 
+/**
+ The img-src directive restricts from where the protected resource can load images.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-img-src)
+ */
 @objc
 public class ImgDirective: Directive {
 
@@ -647,6 +714,12 @@ public class ImgDirective: Directive {
     }
 }
 
+/**
+ The media-src directive restricts from where the protected resource can load
+ video, audio, and associated text tracks.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-media-src)
+ */
 @objc
 public class MediaDirective: Directive {
 
@@ -677,6 +750,11 @@ public class MediaDirective: Directive {
     }
 }
 
+/**
+ The object-src directive restricts from where the protected resource can load plugins.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-object-src)
+ */
 @objc
 public class ObjectDirective: Directive {
 
@@ -707,6 +785,12 @@ public class ObjectDirective: Directive {
     }
 }
 
+/**
+ The plugin-types directive restricts the set of plugins that can be invoked by
+ the protected resource by limiting the types of resources that can be embedded.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-plugin-types)
+ */
 @objc
 public class PluginTypesDirective: Directive {
 
@@ -737,6 +821,12 @@ public class PluginTypesDirective: Directive {
     }
 }
 
+/**
+ The report-uri directive specifies a URL to which the user agent sends reports
+ about policy violation.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-report-uri)
+ */
 @objc
 public class ReportUriDirective: Directive {
 
@@ -767,6 +857,12 @@ public class ReportUriDirective: Directive {
     }
 }
 
+/**
+ The sandbox directive specifies an HTML sandbox policy that the user agent applies
+ to the protected resource.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-sandbox)
+ */
 @objc
 public class SandboxDirective: Directive {
 
@@ -797,6 +893,13 @@ public class SandboxDirective: Directive {
     }
 }
 
+/**
+ The script-src directive restricts which scripts the protected resource can execute.
+ The directive also controls other resources, such as XSLT style sheets [XSLT],
+ which can cause the user agent to execute script.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-script-src)
+ */
 @objc
 public class ScriptDirective: Directive {
 
@@ -827,6 +930,12 @@ public class ScriptDirective: Directive {
     }
 }
 
+/**
+ The style-src directive restricts which styles the user may applies to the
+ protected resource.
+
+ [Spec](https://www.w3.org/TR/CSP2/#directive-style-src)
+ */
 @objc
 public class StyleDirective: Directive {
 
