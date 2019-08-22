@@ -111,9 +111,28 @@ public class CSPHeader: NSObject {
 
     // MARK: Public methods
 
-    @objc
-    public func get(_ directiveType: Directive.Type) -> Directive? {
-        return directives.first { type(of: $0) == directiveType }
+    /**
+     Searches for the first `Directive` of the given type and returns it.
+
+     - parameter directiveType: The type of `Directive` to search for.
+     - returns: The first directive of the given type, or `nil` if not contained.
+    */
+    public func get<T: Directive>(_ directiveType: T.Type) -> T? {
+        return directives.first { type(of: $0) == directiveType } as? T
+    }
+
+    /**
+     Searches for the first `Directive` of the given type and returns it.
+
+     This is the non-generic version to support Objective-C, which can't use
+     Swift generics.
+
+     - parameter directiveType: The type of `Directive` to search for.
+     - returns: The first directive of the given type, or `nil` if not contained.
+     */
+    @objc(get:)
+    public func __get(_ directiveType: Directive.Type) -> Directive? {
+        return get(directiveType)
     }
 
     /**
