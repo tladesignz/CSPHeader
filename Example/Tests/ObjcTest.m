@@ -39,6 +39,8 @@
     CSPHeader *header2 = [[CSPHeader alloc] initFromHeaders:@{@"Content-Security-Policy": @"default-src 'self'"}];
     XCTAssertEqualObjects(header2.description, @"default-src 'self'");
 
+    XCTAssertEqualObjects([header2 get:DefaultDirective.self], [[DefaultDirective alloc] initWithSourceStrings:@[@"'self'"]]);
+
     HostSource *all = [HostSource all];
     XCTAssertEqualObjects(all.description, @"*");
 }

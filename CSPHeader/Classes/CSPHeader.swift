@@ -111,6 +111,11 @@ public class CSPHeader: NSObject {
 
     // MARK: Public methods
 
+    @objc
+    public func get(_ directiveType: Directive.Type) -> Directive? {
+        return directives.first { type(of: $0) == directiveType }
+    }
+
     /**
      Prepend the sources of a given directive to the directive with the same name,
      **if it already exists** in the header.
@@ -124,9 +129,7 @@ public class CSPHeader: NSObject {
     @discardableResult
     @objc(prependDirective:)
     public func prepend(_ directive: Directive) -> CSPHeader {
-        let original = directives.first { $0 == directive }
-
-        if let original = original {
+        if let original = get(type(of: directive)) {
             original.prepend(directive.sources)
         }
 

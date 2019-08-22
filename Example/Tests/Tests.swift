@@ -312,5 +312,16 @@ class CSPHeaderSpec: QuickSpec {
                 expect(String(describing: header)).to(equal("default-src *"))
             }
         }
+
+        describe("search") {
+            let header = CSPHeader(token: "default-src 'none'; image-src *")
+
+            it("directive can be found") {
+                expect(header.get(DefaultDirective.self)).to(equal(DefaultDirective(NoneSource())))
+            }
+            it("non-existing directive can not be found") {
+                expect(header.get(ObjectDirective.self)).to(beNil())
+            }
+        }
     }
 }
