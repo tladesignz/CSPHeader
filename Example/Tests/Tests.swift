@@ -303,6 +303,20 @@ class CSPHeaderSpec: QuickSpec {
 
                 expect(headers).to(equal(expected))
             }
+
+            it("doesn't add empty headers, but deletes old ones") {
+                var headers = ["Foo": "bar", "Content-Security-Policy": "default-src 'none'"]
+
+                let expected = ["Foo": "bar"]
+
+                let header = CSPHeader(token: "")
+
+                expect(String(describing: header)).to(equal(""))
+
+                header.applyTo(headers: &headers)
+
+                expect(headers).to(equal(expected))
+            }
         }
 
         describe("special all-hosts source") {

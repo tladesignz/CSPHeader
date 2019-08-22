@@ -301,6 +301,9 @@ public class CSPHeader: NSObject {
      (regardless of casing) will be removed and 2 new headers with the respective
      names will be added.
 
+     An empty CSP header *will not be added*. Old headers which were contained
+     before, will be deleted, however!
+
      - parameter headers: A dictionary of HTTP headers.
     */
     public func applyTo(headers: inout [String: String]) {
@@ -313,7 +316,9 @@ public class CSPHeader: NSObject {
                 }
             }
 
-            headers[name] = csp
+            if !csp.isEmpty {
+                headers[name] = csp
+            }
         }
     }
 
