@@ -43,6 +43,9 @@
 
     HostSource *all = [HostSource all];
     XCTAssertEqualObjects(all.description, @"*");
+
+    NSDictionary *expected = @{@"Content-Security-Policy": @"default-src 'self'", @"X-WebKit-CSP": @"default-src 'self'"};
+    XCTAssertEqualObjects([header2 applyToHeaders: @{}], expected);
 }
 
 @end

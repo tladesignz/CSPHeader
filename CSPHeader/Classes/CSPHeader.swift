@@ -305,9 +305,12 @@ public class CSPHeader: NSObject {
      before, will be deleted, however!
 
      - parameter headers: A dictionary of HTTP headers.
+     - returns: The headers dictionary with all old CSP headers removed and the new ones added, if any.
     */
-    public func applyTo(headers: inout [String: String]) {
+    @objc
+    public func applyTo(headers: [String: String]) -> [String: String] {
         let csp = String(describing: self)
+        var headers = headers
 
         for name in CSPHeader.headerNames {
             for key in headers.keys {
@@ -320,6 +323,8 @@ public class CSPHeader: NSObject {
                 headers[name] = csp
             }
         }
+
+        return headers
     }
 
 

@@ -287,7 +287,7 @@ class CSPHeaderSpec: QuickSpec {
             it("replaces headers correctly") {
                 let addition = "; script-src 'none'"
 
-                var headers = ["Foo": "bar",
+                let headers = ["Foo": "bar",
                                "CONTENT-Security-Policy": token,
                                "x-webkit-csp": token,]
 
@@ -299,13 +299,11 @@ class CSPHeaderSpec: QuickSpec {
 
                 header.addOrReplace(ScriptDirective(NoneSource()))
 
-                header.applyTo(headers: &headers)
-
-                expect(headers).to(equal(expected))
+                expect(header.applyTo(headers: headers)).to(equal(expected))
             }
 
             it("doesn't add empty headers, but deletes old ones") {
-                var headers = ["Foo": "bar", "Content-Security-Policy": "default-src 'none'"]
+                let headers = ["Foo": "bar", "Content-Security-Policy": "default-src 'none'"]
 
                 let expected = ["Foo": "bar"]
 
@@ -313,9 +311,7 @@ class CSPHeaderSpec: QuickSpec {
 
                 expect(String(describing: header)).to(equal(""))
 
-                header.applyTo(headers: &headers)
-
-                expect(headers).to(equal(expected))
+                expect(header.applyTo(headers: headers)).to(equal(expected))
             }
         }
 
