@@ -39,6 +39,8 @@ Pull requests wellcome!
 
   s.ios.deployment_target = '8.0'
 
+  s.swift_versions = '5.0'
+
   s.source_files = 'CSPHeader/Classes/**/*'
   
   # s.resource_bundles = {
