@@ -142,6 +142,9 @@ public class CSPHeader: NSObject {
      If a directive doesn't already exist, it will be ignored and
      **not** added to the header!
 
+     If a directive contains the `NoneSource`, that will be removed, as the
+     `NoneSource` shall not stand with anything else.
+
      - parameter directive: A directive which' sources get prepended.
      - returns: self for fluency.
     */
@@ -149,7 +152,8 @@ public class CSPHeader: NSObject {
     @objc(prependDirective:)
     public func prepend(_ directive: Directive) -> CSPHeader {
         if let original = get(type(of: directive)) {
-            original.prepend(directive.sources)
+            original.remove(NoneSource.self)
+                .prepend(directive.sources)
         }
 
         return self
@@ -161,6 +165,9 @@ public class CSPHeader: NSObject {
 
      If a directive doesn't already exist, it will be ignored and
      **not** added to the header!
+
+     If a directive contains the `NoneSource`, that will be removed, as the
+     `NoneSource` shall not stand with anything else.
 
      - parameter directives: List of directives which' sources get prepended.
      - returns: self for fluency.

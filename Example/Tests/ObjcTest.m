@@ -46,6 +46,13 @@
 
     NSDictionary *expected = @{@"Content-Security-Policy": @"default-src 'self'", @"X-WebKit-CSP": @"default-src 'self'"};
     XCTAssertEqualObjects([header2 applyToHeaders: @{}], expected);
+
+    Directive *directive = [Directive parse:@"default-src 'self' 'unsafe-inline'"];
+    [directive remove:@[[[SelfSource alloc] init]]];
+    XCTAssertEqualObjects(directive.description, @"default-src 'unsafe-inline'");
+
+    [directive removeSourceOfType: UnsafeInlineSource.self];
+    XCTAssertEqualObjects(directive.description, @"default-src 'none'");
 }
 
 @end

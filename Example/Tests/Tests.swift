@@ -111,11 +111,41 @@ class CSPHeaderSpec: QuickSpec {
                 expect(String(describing: header)).to(equal("default-src foobar: 'self'"))
             }
 
-            it("renders corectly when directive not there") {
+            it("don't prepend when directive not there") {
                 let header = CSPHeader(token: token)
                 header.prepend(ScriptDirective(SchemeSource(scheme: "foobar")))
 
                 expect(String(describing: header)).to(equal(token))
+            }
+
+            it("removes none when source is none") {
+                let header = CSPHeader(token: "default-src 'none'")
+                header.prepend(DefaultDirective(SchemeSource(scheme: "foobar")))
+                expect(String(describing: header)).to(equal("default-src foobar:"))
+            }
+        }
+
+        describe("remove sources") {
+            let sources = "default-src 'self' 'unsafe-inline' https://example.com/"
+
+            it("removes multiple sources") {
+                let directive = Directive.parse(sources)
+
+                expect(directive).toNot(beNil())
+
+                directive!.remove(SelfSource(), UnsafeInlineSource())
+
+                expect(String(describing: directive!)).to(equal("default-src https://example.com/"))
+            }
+
+            it("removes source by type") {
+                let directive = Directive.parse(sources)
+
+                expect(directive).toNot(beNil())
+
+                directive!.remove(HostSource.self)
+
+                expect(String(describing: directive!)).to(equal("default-src 'self' 'unsafe-inline'"))
             }
         }
 

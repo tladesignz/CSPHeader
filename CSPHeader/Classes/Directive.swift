@@ -343,6 +343,27 @@ public class Directive: NSObject {
     }
 
     @discardableResult
+    public func remove(_ sources: Source...) -> Directive {
+        return remove(sources)
+    }
+
+    @discardableResult
+    @objc
+    public func remove(_ sources: [Source]) -> Directive {
+        self.sources.removeAll { sources.contains($0) }
+
+        return self
+    }
+
+    @discardableResult
+    @objc(removeSourceOfType:)
+    public func remove(_ sourceType: Source.Type) -> Directive {
+        self.sources.removeAll { type(of: $0) == sourceType }
+
+        return self
+    }
+
+    @discardableResult
     @objc
     public func removeAll() -> Directive {
         return replace([])
