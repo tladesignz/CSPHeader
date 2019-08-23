@@ -4,6 +4,24 @@
 [![License](https://img.shields.io/cocoapods/l/CSPHeader.svg?style=flat)](https://cocoapods.org/pods/CSPHeader)
 [![Platform](https://img.shields.io/cocoapods/p/CSPHeader.svg?style=flat)](https://cocoapods.org/pods/CSPHeader)
 
+## Summary
+
+CSPHeader parses, manipulates and generates Content-Security-Policy headers.
+
+## Description
+
+This library parses, manipulates and generates Content-Security-Policy (CSP) headers.
+
+This is especially useful, when you want to modify a CSP of a web page you display
+in your app and which needs some JavaScript injected.
+
+You could also build a CSP analyzer or generator app with it.
+
+This is the first release and may contain some rough edges.
+
+Pull requests wellcome!
+
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
