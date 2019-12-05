@@ -129,9 +129,9 @@ public class Directive: NSObject {
         var sources = [Source]()
 
         for rawValue in pieces.dropFirst() {
-            let source = String(rawValue).lowercased()
+            let source = String(rawValue)
 
-            if let wellKnown = Source.Value(rawValue: source) {
+            if let wellKnown = Source.Value(rawValue: source.lowercased()) {
                 switch wellKnown {
                 case .allHosts:
                     sources.append(HostSource(url: URL(string: wellKnown.rawValue)!))

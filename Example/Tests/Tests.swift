@@ -363,5 +363,13 @@ class CSPHeaderSpec: QuickSpec {
                 expect(header.get(ObjectDirective.self)).to(beNil())
             }
         }
+
+        describe("case-sensitive nonce") {
+            let header = CSPHeader(token: "script-src 'self' 'unsafe-inline' https://*.twimg.com   https://www.google-analytics.com https://twitter.com  'nonce-N2MzNzM2YWMtZTZmYi00MmI0LWJkYmMtYWEzY2UzMmU0Yzk5'")
+
+            it("keeps case") {
+                expect(String(describing: header)).to(equal("script-src 'self' 'unsafe-inline' https://*.twimg.com https://www.google-analytics.com https://twitter.com 'nonce-N2MzNzM2YWMtZTZmYi00MmI0LWJkYmMtYWEzY2UzMmU0Yzk5'"))
+            }
+        }
     }
 }
