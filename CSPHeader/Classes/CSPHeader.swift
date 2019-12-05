@@ -226,7 +226,7 @@ public class CSPHeader: NSObject {
     }
 
     /**
-     Makes an script available, which you injected using a ˚script˚ tag.
+     Makes a script available, which you injected using a ˚script˚ tag.
 
      Logic is as follows:
 
@@ -264,7 +264,7 @@ public class CSPHeader: NSObject {
     }
 
     /**
-     Makes an style available, which you injected using a ˚style˚ tag.
+     Makes a style available, which you injected using a ˚style˚ tag.
 
      Logic is as follows:
 
@@ -282,7 +282,7 @@ public class CSPHeader: NSObject {
        - check, if it is empty. In that case, replace with new `source`.
        - else, prepend new `source` to source list.
 
-     - parameter nonce: The nonce you added as attribute to the `script` tag.
+     - parameter nonce: The nonce you added as attribute to the `style` tag.
      OPTIONAL but **very recommended**! If you don't provide a nonce, 'unsafe-inline'
      will be used, which opens the page up for other (probably unwanted) injections.
 
