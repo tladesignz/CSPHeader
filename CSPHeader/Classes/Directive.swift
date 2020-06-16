@@ -143,18 +143,32 @@ public class Directive: NSObject {
                     sources.append(UnsafeInlineSource())
                 case .unsafeEval:
                     sources.append(UnsafeEvalSource())
+                case .allowDownloadsWithoutUserActivation:
+                    sources.append(AllowDownloadsWithoutUserActivationSource())
                 case .allowForms:
                     sources.append(AllowFormsSource())
+                case .allowModals:
+                    sources.append(AllowModalsSource())
+                case .allowOrientationLock:
+                    sources.append(AllowOrientationLockSource())
                 case .allowPointerLock:
                     sources.append(AllowPointerLockSource())
                 case .allowPopups:
-                    sources.append(AllowPopups())
+                    sources.append(AllowPopupsSource())
+                case .allowPopupsToEscapeSandbox:
+                    sources.append(AllowPopupsToEscapeSandboxSource())
+                case .allowPresentation:
+                    sources.append(AllowPresentationSource())
                 case .allowSameOrigin:
-                    sources.append(AllowSameOrigin())
+                    sources.append(AllowSameOriginSource())
                 case .allowScripts:
-                    sources.append(AllowScripts())
+                    sources.append(AllowScriptsSource())
+                case .allowStorageAccessByUserActivation:
+                    sources.append(AllowStorageAccessByUserActivationSource())
                 case .allowTopNavigation:
                     sources.append(AllowTopNavigationSource())
+                case .allowTopNavigationByUserActivation:
+                    sources.append(AllowTopNavigationByUserActivationSource())
                 }
             }
             else if NonceSource.containsNonce(token: source) {

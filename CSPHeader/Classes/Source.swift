@@ -9,6 +9,9 @@ import UIKit
 
 /**
  [Spec](https://www.w3.org/TR/CSP2/#source-list-syntax)
+
+ More sandbox directive sources:
+ https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/sandbox
  */
 @objc
 public class Source: NSObject {
@@ -25,7 +28,22 @@ public class Source: NSObject {
         /**
          Only in sandbox directive.
         */
+        case allowDownloadsWithoutUserActivation
+
+        /**
+         Only in sandbox directive.
+        */
         case allowForms
+
+        /**
+         Only in sandbox directive.
+        */
+        case allowModals
+
+        /**
+         Only in sandbox directive.
+        */
+        case allowOrientationLock
 
         /**
          Only in sandbox directive.
@@ -40,6 +58,16 @@ public class Source: NSObject {
         /**
          Only in sandbox directive.
          */
+        case allowPopupsToEscapeSandbox
+
+        /**
+         Only in sandbox directive.
+         */
+        case allowPresentation
+
+        /**
+         Only in sandbox directive.
+         */
         case allowSameOrigin
 
         /**
@@ -50,7 +78,17 @@ public class Source: NSObject {
         /**
          Only in sandbox directive.
          */
+        case allowStorageAccessByUserActivation
+
+        /**
+         Only in sandbox directive.
+         */
         case allowTopNavigation
+
+        /**
+         Only in sandbox directive.
+         */
+        case allowTopNavigationByUserActivation
 
         public typealias RawValue = String
 
@@ -66,18 +104,32 @@ public class Source: NSObject {
                 return "'unsafe-eval'"
             case .allHosts:
                 return "*"
+            case .allowDownloadsWithoutUserActivation:
+                return "allow-downloads-without-user-activation"
             case .allowForms:
                 return "allow-forms"
+            case .allowModals:
+                return "allow-modals"
+            case .allowOrientationLock:
+                return "allow-orientation-lock"
             case .allowPointerLock:
                 return "allow-pointer-lock"
             case .allowPopups:
                 return "allow-popups"
+            case .allowPopupsToEscapeSandbox:
+                return "allow-popups-to-escape-sandbox"
+            case .allowPresentation:
+                return "allow-presentation"
             case .allowSameOrigin:
                 return "allow-same-origin"
             case .allowScripts:
                 return "allow-scripts"
+            case .allowStorageAccessByUserActivation:
+                return "allow-storage-access-by-user-activation"
             case .allowTopNavigation:
                 return "allow-top-navigation"
+            case .allowTopNavigationByUserActivation:
+                return "allow-top-navigation-by-user-activation"
             }
         }
 
@@ -93,18 +145,32 @@ public class Source: NSObject {
                 self = .unsafeEval
             case "*":
                 self = .allHosts
+            case "allow-downloads-without-user-activation":
+                self = .allowDownloadsWithoutUserActivation
             case "allow-forms":
                 self = .allowForms
+            case "allow-modals":
+                self = .allowModals
+            case "allow-orientation-lock":
+                self = .allowOrientationLock
             case "allow-pointer-lock":
                 self = .allowPointerLock
             case "allow-popups":
                 self = .allowPopups
+            case "allow-popups-to-escape-sandbox":
+                self = .allowPopupsToEscapeSandbox
+            case "allow-presentation":
+                self = .allowPresentation
             case "allow-same-origin":
                 self = .allowSameOrigin
             case "allow-scripts":
                 self = .allowScripts
+            case "allow-storage-access-by-user-activation":
+                self = .allowStorageAccessByUserActivation
             case "allow-top-navigation":
                 self = .allowTopNavigation
+            case "allow-top-navigation-by-user-activation":
+                self = .allowTopNavigationByUserActivation
             default:
                 return nil
             }
@@ -337,11 +403,36 @@ public class HashSource: Source {
     }
 }
 
+
+@objcMembers
+public class AllowDownloadsWithoutUserActivationSource: Source {
+
+    public init() {
+        super.init(.allowDownloadsWithoutUserActivation)
+    }
+}
+
 @objcMembers
 public class AllowFormsSource: Source {
 
     public init() {
         super.init(.allowForms)
+    }
+}
+
+@objcMembers
+public class AllowModalsSource: Source {
+
+    public init() {
+        super.init(.allowModals)
+    }
+}
+
+@objcMembers
+public class AllowOrientationLockSource: Source {
+
+    public init() {
+        super.init(.allowOrientationLock)
     }
 }
 
@@ -354,7 +445,7 @@ public class AllowPointerLockSource: Source {
 }
 
 @objcMembers
-public class AllowPopups: Source {
+public class AllowPopupsSource: Source {
 
     public init() {
         super.init(.allowPopups)
@@ -362,7 +453,23 @@ public class AllowPopups: Source {
 }
 
 @objcMembers
-public class AllowSameOrigin: Source {
+public class AllowPopupsToEscapeSandboxSource: Source {
+
+    public init() {
+        super.init(.allowPopupsToEscapeSandbox)
+    }
+}
+
+@objcMembers
+public class AllowPresentationSource: Source {
+
+    public init() {
+        super.init(.allowPresentation)
+    }
+}
+
+@objcMembers
+public class AllowSameOriginSource: Source {
 
     public init() {
         super.init(.allowSameOrigin)
@@ -370,10 +477,18 @@ public class AllowSameOrigin: Source {
 }
 
 @objcMembers
-public class AllowScripts: Source {
+public class AllowScriptsSource: Source {
 
     public init() {
         super.init(.allowScripts)
+    }
+}
+
+@objcMembers
+public class AllowStorageAccessByUserActivationSource: Source {
+
+    public init() {
+        super.init(.allowStorageAccessByUserActivation)
     }
 }
 
@@ -382,5 +497,13 @@ public class AllowTopNavigationSource: Source {
 
     public init() {
         super.init(.allowTopNavigation)
+    }
+}
+
+@objcMembers
+public class AllowTopNavigationByUserActivationSource: Source {
+
+    public init() {
+        super.init(.allowTopNavigationByUserActivation)
     }
 }
