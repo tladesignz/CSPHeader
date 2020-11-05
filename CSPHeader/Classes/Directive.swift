@@ -28,6 +28,7 @@ public class Directive: NSObject {
         case objectSrc
         case pluginTypes
         case reportUri
+        case reportTo
         case sandbox
         case scriptSrc
         case styleSrc
@@ -62,6 +63,8 @@ public class Directive: NSObject {
                 return "plugin-types"
             case .reportUri:
                 return "report-uri"
+            case .reportTo:
+                return "report-to"
             case .sandbox:
                 return "sandbox"
             case .scriptSrc:
@@ -99,6 +102,8 @@ public class Directive: NSObject {
                 self = .pluginTypes
             case "report-uri":
                 self = .reportUri
+            case "report-to":
+                self = .reportTo
             case "sandbox":
                 self = .sandbox
             case "script-src":
@@ -224,6 +229,8 @@ public class Directive: NSObject {
                 return PluginTypesDirective(sources)
             case .reportUri:
                 return ReportUriDirective(sources)
+            case .reportTo:
+                return ReportToDirective(sources)
             case .sandbox:
                 return SandboxDirective(sources)
             case .scriptSrc:
@@ -889,6 +896,36 @@ public class ReportUriDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .reportUri, sources)
+    }
+}
+
+@objc
+public class ReportToDirective: Directive {
+
+    public convenience init(_ sources: String...) {
+        self.init(sources)
+    }
+
+    @objc(initWithSourceStrings:)
+    public convenience init(_ sources: [String]) {
+        self.init(sources.map { Source($0) })
+    }
+
+    public convenience init(_ sources: Source.Value...) {
+        self.init(sources)
+    }
+
+    public convenience init(_ sources: [Source.Value]) {
+        self.init(sources.map { Source($0) })
+    }
+
+   public convenience init(_ sources: Source...) {
+        self.init(sources)
+    }
+
+    @objc(initWithSources:)
+    public init(_ sources: [Source]) {
+        super.init(name: .reportTo, sources)
     }
 }
 
