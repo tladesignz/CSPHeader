@@ -37,7 +37,7 @@ Pull requests wellcome!
   s.source           = { :git => 'https://github.com/tladesignz/CSPHeader.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/tladesignz'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.swift_versions = '5.0'
 
