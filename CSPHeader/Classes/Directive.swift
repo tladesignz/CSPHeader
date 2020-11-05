@@ -137,7 +137,7 @@ public class Directive: NSObject {
                     sources.append(HostSource(url: URL(string: wellKnown.rawValue)!))
                 case .none:
                     sources.append(NoneSource())
-                case .self:
+                case .`self`:
                     sources.append(SelfSource())
                 case .unsafeInline:
                     sources.append(UnsafeInlineSource())
