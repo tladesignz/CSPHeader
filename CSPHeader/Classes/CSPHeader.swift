@@ -217,9 +217,27 @@ public class CSPHeader: NSObject {
      */
     @discardableResult
     @objc(addOrReplaceDirectives:)
-    public func addOrReplace(directives: [Directive]) -> CSPHeader {
+    public func addOrReplace(_ directives: [Directive]) -> CSPHeader {
         for directive in directives {
             addOrReplace(directive)
+        }
+
+        return self
+    }
+
+    @discardableResult
+    @objc(removeDirective:)
+    public func remove(_ directive: Directive) -> CSPHeader {
+        directives.removeAll { $0 == directive }
+
+        return self
+    }
+
+    @discardableResult
+    @objc(removeDirectives:)
+    public func remove(_ directives: [Directive]) -> CSPHeader {
+        for directive in directives {
+            remove(directive)
         }
 
         return self

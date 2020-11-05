@@ -354,7 +354,7 @@ class CSPHeaderSpec: QuickSpec {
         }
 
         describe("search") {
-            let header = CSPHeader(token: "default-src 'none'; image-src *")
+            let header = CSPHeader(token: "default-src 'none'; img-src *")
 
             it("directive can be found") {
                 expect(header.get(DefaultDirective.self)).to(equal(DefaultDirective(NoneSource())))
@@ -369,6 +369,24 @@ class CSPHeaderSpec: QuickSpec {
 
             it("keeps case") {
                 expect(String(describing: header)).to(equal("script-src 'self' 'unsafe-inline' https://*.twimg.com https://www.google-analytics.com https://twitter.com 'nonce-N2MzNzM2YWMtZTZmYi00MmI0LWJkYmMtYWEzY2UzMmU0Yzk5'"))
+            }
+        }
+
+        describe("remove directive") {
+            it("removes one directive") {
+                let header = CSPHeader(token: "default-src 'none'; img-src *; report-uri https://example.org/report.php")
+
+                header.remove(ReportUriDirective(.none))
+
+                expect(header).to(equal(CSPHeader(token: "default-src 'none'; img-src *;")))
+            }
+
+            it("removes two directive") {
+                let header = CSPHeader(token: "default-src 'none'; img-src *; report-uri https://example.org/report.php")
+
+                header.remove([ReportUriDirective(.none), ImgDirective(.none)])
+
+                expect(header).to(equal(CSPHeader(token: "default-src 'none'")))
             }
         }
     }
