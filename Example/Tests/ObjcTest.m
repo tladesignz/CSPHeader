@@ -61,7 +61,7 @@
     CSPHeader *header4 = [[CSPHeader alloc] initWithToken:@"default-src *; img-src unsafe-inline; report-to foobar"];
     [header4 removeDirectives:@[
         [[ReportToDirective alloc] initWithSources:@[[NoneSource new]]],
-        [[ImgDirective alloc] initWithSources:@[[NoneSource new]]]
+        [ImgDirective new]
     ]];
     XCTAssertEqualObjects(header4.description, @"default-src *");
 }

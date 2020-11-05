@@ -282,6 +282,18 @@ public class Directive: NSObject {
         self.sources = sources
     }
 
+    @objc(initWithStringName:)
+    public init(name: String) {
+        self.name = name
+        self.sources = []
+    }
+
+    @objc(initWithName:)
+    public init(name: Name) {
+        self.name = name.rawValue
+        self.sources = []
+    }
+
 
     // MARK: NSObject
 
@@ -456,6 +468,11 @@ public class BaseUriDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .baseUri, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -491,6 +508,11 @@ public class ChildDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .childSrc, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -528,6 +550,11 @@ public class ConnectDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .connectSrc, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -563,6 +590,11 @@ public class DefaultDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .defaultSrc, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -597,6 +629,11 @@ public class FontDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .fontSrc, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -636,6 +673,11 @@ public class FormActionDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .formAction, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -681,6 +723,11 @@ public class FrameAncestorsDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .frameAncestors, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -719,6 +766,11 @@ public class FrameDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .frameSrc, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -753,6 +805,11 @@ public class ImgDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .imgSrc, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -790,6 +847,11 @@ public class MediaDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .mediaSrc, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -824,6 +886,11 @@ public class ObjectDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .objectSrc, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -861,6 +928,11 @@ public class PluginTypesDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .pluginTypes, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -897,6 +969,11 @@ public class ReportUriDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .reportUri, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 @objc
@@ -926,6 +1003,11 @@ public class ReportToDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .reportTo, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -962,6 +1044,11 @@ public class SandboxDirective: Directive {
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .sandbox, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
 
@@ -1000,6 +1087,11 @@ public class ScriptDirective: Directive {
     public init(_ sources: [Source]) {
         super.init(name: .scriptSrc, sources)
     }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
+    }
 }
 
 /**
@@ -1028,12 +1120,17 @@ public class StyleDirective: Directive {
         self.init(sources.map { Source($0) })
     }
 
-   public convenience init(_ sources: Source...) {
-    self.init(sources)
+    public convenience init(_ sources: Source...) {
+        self.init(sources)
     }
 
     @objc(initWithSources:)
     public init(_ sources: [Source]) {
         super.init(name: .styleSrc, sources)
+    }
+
+    @objc
+    public convenience init() {
+        self.init([.none])
     }
 }
