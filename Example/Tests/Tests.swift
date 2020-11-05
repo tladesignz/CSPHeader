@@ -381,10 +381,26 @@ class CSPHeaderSpec: QuickSpec {
                 expect(header).to(equal(CSPHeader(token: "default-src 'none'; img-src *;")))
             }
 
-            it("removes two directive") {
+            it("removes two directives") {
                 let header = CSPHeader(token: "default-src 'none'; img-src *; report-uri https://example.org/report.php")
 
                 header.remove([ReportUriDirective(.none), ImgDirective(.none)])
+
+                expect(header).to(equal(CSPHeader(token: "default-src 'none'")))
+            }
+
+            it("removes one directive by name") {
+                let header = CSPHeader(token: "default-src 'none'; img-src *; report-uri https://example.org/report.php")
+
+                header.remove(.reportUri)
+
+                expect(header).to(equal(CSPHeader(token: "default-src 'none'; img-src *;")))
+            }
+
+            it("removes two directives by names") {
+                let header = CSPHeader(token: "default-src 'none'; img-src *; report-uri https://example.org/report.php")
+
+                header.remove(.reportUri, .imgSrc)
 
                 expect(header).to(equal(CSPHeader(token: "default-src 'none'")))
             }

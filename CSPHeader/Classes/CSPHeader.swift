@@ -243,6 +243,21 @@ public class CSPHeader: NSObject {
         return self
     }
 
+    @discardableResult
+    @objc(removeDirectiveByName:)
+    public func remove(_ name: Directive.Name) -> CSPHeader {
+        return remove(Directive(name: name, [NoneSource()]))
+    }
+
+    @discardableResult
+    public func remove(_ names: Directive.Name...) -> CSPHeader {
+        for name in names {
+            remove(name)
+        }
+
+        return self
+    }
+
     /**
      Makes a script available, which you injected using a ˚script˚ tag.
 

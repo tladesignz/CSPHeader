@@ -53,6 +53,17 @@
 
     [directive removeSourceOfType: UnsafeInlineSource.self];
     XCTAssertEqualObjects(directive.description, @"default-src 'none'");
+
+    CSPHeader *header3 = [[CSPHeader alloc] initWithToken:@"default-src *; report-to foobar"];
+    [header3 removeDirectiveByName:NameReportTo];
+    XCTAssertEqualObjects(header3.description, @"default-src *");
+
+    CSPHeader *header4 = [[CSPHeader alloc] initWithToken:@"default-src *; img-src unsafe-inline; report-to foobar"];
+    [header4 removeDirectives:@[
+        [[ReportToDirective alloc] initWithSources:@[[NoneSource new]]],
+        [[ImgDirective alloc] initWithSources:@[[NoneSource new]]]
+    ]];
+    XCTAssertEqualObjects(header4.description, @"default-src *");
 }
 
 @end
