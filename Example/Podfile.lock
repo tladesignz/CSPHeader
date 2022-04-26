@@ -1,12 +1,12 @@
 PODS:
-  - CSPHeader (0.5.0)
-  - Nimble (9.0.0)
-  - Quick (3.0.0)
+  - CSPHeader (0.6.0)
+  - Nimble (9.2.1)
+  - Quick (5.0.1)
 
 DEPENDENCIES:
   - CSPHeader (from `../`)
   - Nimble (~> 9.0)
-  - Quick (~> 3.0)
+  - Quick (~> 5.0)
 
 SPEC REPOS:
   trunk:
@@ -18,10 +18,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CSPHeader: 25c7abe130e77e75964884b4bf5a967985e2b7c0
-  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
-  Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
+  CSPHeader: b28ad862745eb26644109f3a3aa3f5e318dcb9fe
+  Nimble: e7e615c0335ee4bf5b0d786685451e62746117d5
+  Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
 
-PODFILE CHECKSUM: 62494b0de9f17d8a54af58fb1b739e5e1d722a6e
+PODFILE CHECKSUM: c19cad46a9fb63b93ba0275580cd4e5c9f97506d
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.11.3

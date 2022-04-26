@@ -8,7 +8,7 @@ target 'CSPHeader_Example' do
   target 'CSPHeader_Tests' do
     inherit! :search_paths
 
-    pod 'Quick', '~> 3.0'
+    pod 'Quick', '~> 5.0'
     pod 'Nimble', '~> 9.0'
   end
 end
